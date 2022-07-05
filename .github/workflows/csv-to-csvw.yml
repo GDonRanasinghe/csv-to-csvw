@@ -62,7 +62,7 @@ jobs:
                 file_secondary_name="${file_secondary%.*}"
                 file_secondary_extension="${file_secondary##*.}"
                 if [[ "${file_secondary_name}.${file_secondary_extension}" == "${file_path}.json" ]]; then
-                  config_file="${file}.json"
+                  config_file="${file_secondary_name}.json"
                 fi
               done
               
