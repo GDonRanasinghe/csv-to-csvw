@@ -98,10 +98,16 @@ jobs:
             if [[ "$file_extension" == "csv" ]]; then
                 echo $'\n'
                 echo "Handling deletion of file ${file}"
-                metadata_file_path="${file_name//[ ,_]/-}.${file_extension}-metadata.json"
-                out_folder_path="out/${file_path#csv/}/"
-                rm "${metadata_file_path}"
-                rm -r "${out_folder_path}"
+                config_file="${file_path}/${file_name}.json"
+                out_folder="out/${file_path#csv/}/"
+                
+                if [[ -z $config_file ]]; then
+                  rm $metadata_file_path
+                fi
+
+                if [[ -z $out_folder ]]; then
+                  rm -r "out_folder
+                fi
 
                 echo "Finished handling deletion for file ${file}"
                 echo "::set-output name=has_outputs::${{ toJSON(true) }}"
