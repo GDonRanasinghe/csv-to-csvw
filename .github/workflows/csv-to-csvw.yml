@@ -107,12 +107,12 @@ jobs:
                 out_folder="out/${file_path#csv/}/"
                 
                 if [[ -z $config_file ]]; then
-                  rm $config_file
+                  git rm $config_file
                   git commit -m "Deleted out folder for file ${file} - $(date +'%d-%m-%Y at %H:%M:%S')"
                 fi
 
                 if [[ -z $out_folder ]]; then
-                  rm -r $out_folder
+                  git rm -r $out_folder
                   git commit -m "Deleted out folder for file ${file} - $(date +'%d-%m-%Y at %H:%M:%S')"
                 fi
                 
