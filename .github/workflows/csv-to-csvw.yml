@@ -82,6 +82,10 @@ jobs:
               fi
               
               echo "Inspecting CSV-W"
+              inspect_output_file="${out_path}inspect_output.txt"
+              if [ -f "$inspect_output_file" ]; then
+                  rm $inspect_output_file
+              fi
               csvcubed inspect "${GITHUB_WORKSPACE}/${out_path}${file_name//[ ,_]/-}.${file_extension}-metadata.json" >> "${out_path}inspect_output.txt"
               
               unset config_file
