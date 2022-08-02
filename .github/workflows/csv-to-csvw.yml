@@ -97,25 +97,30 @@ jobs:
 
             if [[ "$file_extension" == "csv" ]]; then
                 echo $'\n'
-                echo "Handling deletion of file ${file}"
+                echo "Handling deletions for file ${file}"
                 config_file="${file_path}/${file_name}.json"
                 out_folder="out/${file_path#csv/}/"
                 
+                git config --global user.name "CSV-W from csv upload generator"
+                git pull
+
                 if [[ -z $config_file ]]; then
-                  rm $metadata_file_path
+                  rm $config_file
+                  git commit -m "Deleted out folder for file ${file} - $(date +'%d-%m-%Y at %H:%M:%S')"
                 fi
 
                 if [[ -z $out_folder ]]; then
                   rm -r $out_folder
+                  git commit -m "Deleted out folder for file ${file} - $(date +'%d-%m-%Y at %H:%M:%S')"
                 fi
 
-                echo "Finished handling deletion for file ${file}"
+                echo "Finished handling deletions for file ${file}"
                 echo "::set-output name=has_outputs::${{ toJSON(true) }}"
             fi
           done
 
       - name: Commit generated CSV-Ws and logs to the repository
-        if: ${{ fromJSON(steps.process-added-changed-files.outputs.has_outputs) == true }} || ${{ fromJSON(steps.process-removed-files.outputs.has_outputs) == true }}
+        if: ${{ fromJSON(steps.process-added-changed-files.outputs.has_outputs) == true }}
         run: |
           echo $'\nCommitting CSV-Ws\n'
           git config --global user.name "CSV-W from csv upload generator"
@@ -125,14 +130,14 @@ jobs:
           git push
 
       - name: Publish CSV-Ws and logs to artefacts
-        if: ${{ fromJSON(steps.process-added-changed-files.outputs.has_outputs) == true }} || ${{ fromJSON(steps.process-removed-files.outputs.has_outputs) == true }}
+        if: ${{ fromJSON(steps.process-added-changed-files.outputs.has_outputs) == true }}
         uses: actions/upload-artifact@v2
         with:
           name: assets-for-download
           path: out
 
       - name: Publish CSV-Ws and logs to GitHub Pages
-        if: ${{ fromJSON(steps.process-added-changed-files.outputs.has_outputs) == true }} || ${{ fromJSON(steps.process-removed-changed-files.outputs.has_outputs) == true }}
+        if: ${{ fromJSON(steps.process-added-changed-files.outputs.has_outputs) == true }}
         run: |
           echo $'\n'
           echo "Publishing to GitHub Pages"
