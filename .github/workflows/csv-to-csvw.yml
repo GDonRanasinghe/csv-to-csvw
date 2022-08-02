@@ -106,7 +106,7 @@ jobs:
                 fi
 
                 if [[ -z $out_folder ]]; then
-                  rm -r "out_folder
+                  rm -r $out_folder
                 fi
 
                 echo "Finished handling deletion for file ${file}"
