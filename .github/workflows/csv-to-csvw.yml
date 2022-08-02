@@ -33,6 +33,11 @@ jobs:
       - name: View working directory
         run: ls -la $GITHUB_WORKSPACE
 
+      - name: Config file_extension
+        run: |
+          git config --global user.name "CSV-W from csv upload generator"
+          git pull
+
       - name: Get all added/changed/removed files inside csv folder
         id: get-added-changed-removed-files
         uses: jitterbit/get-changed-files@v1
@@ -101,9 +106,6 @@ jobs:
                 config_file="${file_path}/${file_name}.json"
                 out_folder="out/${file_path#csv/}/"
                 
-                git config --global user.name "CSV-W from csv upload generator"
-                git pull
-
                 if [[ -z $config_file ]]; then
                   rm $config_file
                   git commit -m "Deleted out folder for file ${file} - $(date +'%d-%m-%Y at %H:%M:%S')"
@@ -113,7 +115,9 @@ jobs:
                   rm -r $out_folder
                   git commit -m "Deleted out folder for file ${file} - $(date +'%d-%m-%Y at %H:%M:%S')"
                 fi
-
+                
+                git push
+                
                 echo "Finished handling deletions for file ${file}"
                 echo "::set-output name=has_outputs::${{ toJSON(true) }}"
             fi
@@ -123,8 +127,6 @@ jobs:
         if: ${{ fromJSON(steps.process-added-changed-files.outputs.has_outputs) == true }}
         run: |
           echo $'\nCommitting CSV-Ws\n'
-          git config --global user.name "CSV-W from csv upload generator"
-          git pull
           git add out/
           git commit -m "CSV-Ws generated from csv upload - $(date +'%d-%m-%Y at %H:%M:%S')"
           git push
