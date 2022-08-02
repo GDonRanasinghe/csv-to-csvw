@@ -108,6 +108,7 @@ jobs:
                 echo $'\n'
                 echo "Handling deletions for file ${file}"
                 config_file="${file_path}/${file_name}.json"
+                echo "Error here: ${config_file}"
                 out_folder="out/${file_path#csv/}/"
                 
                 if [ -f "$config_file" ]; then
