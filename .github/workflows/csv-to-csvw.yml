@@ -111,7 +111,7 @@ jobs:
                   git commit -m "Deleted out folder for file ${file} - $(date +'%d-%m-%Y at %H:%M:%S')"
                 fi
 
-                if [ -d $out_folder" ]; then
+                if [ -d "$out_folder" ]; then
                   git rm -r $out_folder
                   git commit -m "Deleted out folder for file ${file} - $(date +'%d-%m-%Y at %H:%M:%S')"
                 fi
