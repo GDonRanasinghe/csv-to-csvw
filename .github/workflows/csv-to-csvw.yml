@@ -33,7 +33,7 @@ jobs:
       - name: View working directory
         run: ls -la $GITHUB_WORKSPACE
 
-      - name: Config file_extension
+      - name: Config git
         run: |
           git config --global user.name "CSV-W from csv upload generator"
           git pull
