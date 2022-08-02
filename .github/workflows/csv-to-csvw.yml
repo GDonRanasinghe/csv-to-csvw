@@ -33,7 +33,7 @@ jobs:
       - name: View working directory
         run: ls -la $GITHUB_WORKSPACE
 
-      - name: Config git
+      - name: Configure git
         run: |
           git config --global user.name "CSV-W from csv upload generator"
           git pull
@@ -108,6 +108,8 @@ jobs:
                 echo $'\n'
                 echo "Handling deletions for file ${file}"
                 config_file="${file_path}/${file_name}.json"
+                echo "Error here: ${file_path}"
+                echo "Error here: ${file_name}"
                 echo "Error here: ${config_file}"
                 out_folder="out/${file_path#csv/}/"
                 
