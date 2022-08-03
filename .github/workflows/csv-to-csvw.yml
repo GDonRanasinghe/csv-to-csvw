@@ -87,8 +87,8 @@ jobs:
                   rm $inspect_output_file
               fi
 
-              find . -name "*.csv-metadata.json" -type -f
-              
+              find . -name "*.csv-metadata.json" -type f
+
               csvcubed inspect "${GITHUB_WORKSPACE}/${out_path}${file_name//[ ,_]/-}.${file_extension}-metadata.json" >> "${out_path}inspect_output.txt"
 
               unset $config_file
