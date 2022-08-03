@@ -57,7 +57,7 @@ jobs:
             file_extension="${file##*.}"
             out_path="out/${file_path#csv/}/"
 
-            if [ $file_extension == "csv" ]; then
+            if [[ $file_extension == "csv" ]]; then
               echo $'\n'
               echo "Processing file ${file}"
               echo "Output path is ${out_path}"
@@ -66,7 +66,7 @@ jobs:
               for file_secondary in "${added_modified_files[@]}"; do
                 file_secondary_name="${file_secondary%.*}"
                 file_secondary_extension="${file_secondary##*.}"
-                if [ "${file_secondary_name}.${file_secondary_extension}" == "${file_path}.json" ]; then
+                if [[ "${file_secondary_name}.${file_secondary_extension}" == "${file_path}.json" ]]; then
                   config_file="${file_secondary_name}.json"
                 fi
               done
@@ -104,7 +104,7 @@ jobs:
             file_name="${file_path##*/}"
             file_extension="${file##*.}"
 
-            if [ $file_extension == "csv" ]; then
+            if [[ $file_extension == "csv" ]]; then
                 echo $'\n'
                 echo "Handling deletions for file ${file}"
                 config_file="${file_path}.${file_extension}.json"
