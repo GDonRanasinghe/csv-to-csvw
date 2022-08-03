@@ -83,7 +83,7 @@ jobs:
               
               echo "Inspecting CSV-W"
               inspect_output_file="${out_path}inspect_output.txt"
-              if [ -f $inspect_output_file ]; then
+              if [[ -f $inspect_output_file ]]; then
                   rm $inspect_output_file
               fi
               csvcubed inspect "${GITHUB_WORKSPACE}/${out_path}${file_name//[ ,_]/-}.${file_extension}-metadata.json" >> "${out_path}inspect_output.txt"
@@ -110,12 +110,12 @@ jobs:
                 config_file="${file_path}.${file_extension}.json"
                 out_folder="out/${file_path#csv/}/"
                 
-                if [ -f $config_file ]; then
+                if [[ -f $config_file ]]; then
                   git rm $config_file
                   git commit -m "Deleted out folder for file ${file} - $(date +'%d-%m-%Y at %H:%M:%S')"
                 fi
 
-                if [ -d $out_folder ]; then
+                if [[ -d $out_folder ]]; then
                   git rm -r $out_folder
                   git commit -m "Deleted out folder for file ${file} - $(date +'%d-%m-%Y at %H:%M:%S')"
                 fi
