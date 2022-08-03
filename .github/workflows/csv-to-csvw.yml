@@ -74,11 +74,11 @@ jobs:
               if [ -f "$config_file" ]; then
                 echo "Config for ${csv_file} is available: ${config_file}"
                 echo "Building CSV-W"
-                csvcubed build ${csv_file} -c $config_file --out $out_path --validation-errors-to-file
+                csvcubed build $csv_file -c $config_file --out $out_path --validation-errors-to-file "${out_path}/validation-errors.json"
               else
                 echo "Config for ${csv_file} is not available"
                 echo "Building CSV-W"
-                csvcubed build ${csv_file} --out $out_path --validation-errors-to-file
+                csvcubed build $csv_file --out $out_path --validation-errors-to-file "${out_path}/validation-errors.json"
               fi
               
               echo "Inspecting CSV-W"
