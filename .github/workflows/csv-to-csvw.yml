@@ -57,7 +57,7 @@ jobs:
             file_extension="${file##*.}"
             out_path="out/${file_path#csv/}/"
 
-            if [[ "$file_extension" == "csv" ]]; then
+            if [ $file_extension == "csv" ]; then
               echo $'\n'
               echo "Processing file ${file}"
               echo "Output path is ${out_path}"
@@ -66,12 +66,12 @@ jobs:
               for file_secondary in "${added_modified_files[@]}"; do
                 file_secondary_name="${file_secondary%.*}"
                 file_secondary_extension="${file_secondary##*.}"
-                if [[ "${file_secondary_name}.${file_secondary_extension}" == "${file_path}.json" ]]; then
+                if [ "${file_secondary_name}.${file_secondary_extension}" == "${file_path}.json" ]; then
                   config_file="${file_secondary_name}.json"
                 fi
               done
               
-              if [ -f "$config_file" ]; then
+              if [ -f $config_file ]; then
                 echo "Config for ${csv_file} is available: ${config_file}"
                 echo "Building CSV-W"
                 csvcubed build $csv_file -c $config_file --out $out_path --validation-errors-to-file
@@ -83,12 +83,12 @@ jobs:
               
               echo "Inspecting CSV-W"
               inspect_output_file="${out_path}inspect_output.txt"
-              if [ -f "$inspect_output_file" ]; then
+              if [ -f $inspect_output_file ]; then
                   rm $inspect_output_file
               fi
               csvcubed inspect "${GITHUB_WORKSPACE}/${out_path}${file_name//[ ,_]/-}.${file_extension}-metadata.json" >> "${out_path}inspect_output.txt"
 
-              unset config_file
+              unset $config_file
               echo "Finished processing file ${file}"
               echo "::set-output name=has_outputs::${{ toJSON(true) }}"
             fi
@@ -104,18 +104,18 @@ jobs:
             file_name="${file_path##*/}"
             file_extension="${file##*.}"
 
-            if [[ "$file_extension" == "csv" ]]; then
+            if [ $file_extension == "csv" ]; then
                 echo $'\n'
                 echo "Handling deletions for file ${file}"
                 config_file="${file_path}.${file_extension}.json"
                 out_folder="out/${file_path#csv/}/"
                 
-                if [ -f "$config_file" ]; then
+                if [ -f $config_file ]; then
                   git rm $config_file
                   git commit -m "Deleted out folder for file ${file} - $(date +'%d-%m-%Y at %H:%M:%S')"
                 fi
 
-                if [ -d "$out_folder" ]; then
+                if [ -d $out_folder ]; then
                   git rm -r $out_folder
                   git commit -m "Deleted out folder for file ${file} - $(date +'%d-%m-%Y at %H:%M:%S')"
                 fi
