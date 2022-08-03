@@ -90,9 +90,7 @@ jobs:
               inspectable_files=`find "${GITHUB_WORKSPACE}/${out_path}" -name "*.csv-metadata.json" -type f`
               for file in "${inspectable_files[@]}"; do
                 echo "Inspecting file ${file}"
-                file_path="${file%.*}"
-                file_name="${file_path##*/}"
-                csvcubed inspect "${GITHUB_WORKSPACE}/${out_path}${file_name}" >> "${out_path}inspect_output.txt"
+                csvcubed inspect $file >> "${out_path}inspect_output.txt"
               done
               
 
