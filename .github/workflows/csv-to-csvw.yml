@@ -107,7 +107,7 @@ jobs:
             if [[ "$file_extension" == "csv" ]]; then
                 echo $'\n'
                 echo "Handling deletions for file ${file}"
-                config_file="${file_path}.json"
+                config_file="${file_path}.${file_extension}.json"
                 out_folder="out/${file_path#csv/}/"
                 
                 if [ -f "$config_file" ]; then
