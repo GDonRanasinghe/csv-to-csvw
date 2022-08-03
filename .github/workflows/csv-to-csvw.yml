@@ -180,6 +180,7 @@ jobs:
                 var html_str = "<ul>";
                 var files = "${processed_out_files}".split(',');
                 files.shift()
+                files.sort()
                 files.forEach(function(file) {
                   file = file.replace("./","")
                   link = "https://${username}.github.io/${repo_name}/"+file
