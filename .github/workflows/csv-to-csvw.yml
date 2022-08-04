@@ -52,6 +52,11 @@ jobs:
             file_name="${file_path##*/}"
             file_extension="${file##*.}"
             out_path="out/${file_path}/"
+            
+            echo "file_path: ${file_path}"
+            echo "file_name: ${file_name}"
+            echo "file_extension: ${file_extension}"
+            echo "out_path: ${out_path}"
 
             if [[ $file_extension == "csv" ]]; then
               echo $'\n'
