@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "/**"
-      - "!out/**"
 
 jobs:
   generate_csvw_from_csv_upload:
@@ -114,7 +111,7 @@ jobs:
             file_name="${file_path##*/}"
             file_extension="${file##*.}"
 
-            if [[ $file_extension == "csv" ]]; then
+            if [[ $file_extension == "csv" && "${file_path}" != *"out/"* ]]; then
                 echo $'\n'
                 echo "Handling deletions for file ${file}"
                 config_file="${file_path}.${file_extension}.json"
