@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "!out/**"
 
 jobs:
   generate_csvw_from_csv_upload:
