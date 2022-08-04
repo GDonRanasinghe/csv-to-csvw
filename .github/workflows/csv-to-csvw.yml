@@ -51,7 +51,7 @@ jobs:
             file_path="${file%.*}"
             file_name="${file_path##*/}"
             file_extension="${file##*.}"
-            out_path="out/${file_path#csv/}/"
+            out_path="out/${file_path}/"
 
             if [[ $file_extension == "csv" ]]; then
               echo $'\n'
@@ -110,7 +110,7 @@ jobs:
                 echo $'\n'
                 echo "Handling deletions for file ${file}"
                 config_file="${file_path}.${file_extension}.json"
-                out_folder="out/${file_path#csv/}/"
+                out_folder="out/${file_path}/"
                 
                 if [[ -f $config_file ]]; then
                   git rm $config_file
