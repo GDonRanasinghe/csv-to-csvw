@@ -3,7 +3,8 @@ name: Generate CSV-W from csv upload to repository.
 on:
   push:
     branches:
-      - main
+      #- main
+      - pr-feedback-updates
 
 jobs:
   generate_csvw_from_csv_upload:
