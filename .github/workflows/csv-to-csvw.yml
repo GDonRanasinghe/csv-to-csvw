@@ -102,6 +102,7 @@ jobs:
                
                 for file in "${inspectable_files[@]}"; do
                   echo "Inspecting file ${file}"
+                  file_path="${file%.*}"
                   file_name="${file_path##*/}"
                   inspect_output_file="${out_path}${file_name}_inspect_output.txt"
 
