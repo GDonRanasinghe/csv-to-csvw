@@ -53,13 +53,15 @@ jobs:
             file_name="${file_path##*/}"
             file_extension="${file##*.}"
             out_path="out/${file_path}/"
-            
+            root =  $(echo "$file_path" | cut -d "/" -f2)
+
             echo "file_path: ${file_path}"
             echo "file_name: ${file_name}"
             echo "file_extension: ${file_extension}"
             echo "out_path: ${out_path}"
+            echo "root: ${root}"
 
-            if [[ $file_extension == "csv" ]]; then
+            if [[ $file_extension == "csv" && $root != "out/" ] ]; then
               echo $'\n'
               echo "Processing file ${file}"
               echo "Output path is ${out_path}"
