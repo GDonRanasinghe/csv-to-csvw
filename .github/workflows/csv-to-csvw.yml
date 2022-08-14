@@ -98,7 +98,9 @@ jobs:
                 fi
                 
                 echo "Inspecting CSV-W"
-                inspect_output_file="${out_path}inspect_output.txt"
+                inspect_output_file="${out_path}${file_name}_inspect_output.txt"
+                echo "Inspect output file: $inspect_output_file"
+
                 if [[ -f $inspect_output_file ]]; then
                     rm $inspect_output_file
                 fi
@@ -106,7 +108,7 @@ jobs:
                 mapfile -d $'\0' inspectable_files < <(find "${GITHUB_WORKSPACE}/${out_path}" -name "*.csv-metadata.json" -type f -print0)
                 for file in "${inspectable_files[@]}"; do
                   echo "Inspecting file ${file}"
-                  csvcubed inspect $file >> "${out_path}inspect_output.txt"
+                  csvcubed inspect $file >> $inspect_output_file
                 done
                 
                 echo "Finished processing file ${file}"
