@@ -61,46 +61,57 @@ jobs:
             echo "out_path: ${out_path}"
             echo "root_path: ${root_path}"
 
-            if [[ $file_extension == "csv" && $root_path != "out" ]]; then
+            if [[ ($file_extension == "csv" || $file_extension == "json") && $root_path != "out" ]]; then
               echo $'\n'
               echo "Processing file ${file}"
               echo "Output path is ${out_path}"
 
-              csv_file=${file}
-              for file_secondary in "${added_modified_files[@]}"; do
-                file_secondary_name="${file_secondary%.*}"
-                file_secondary_extension="${file_secondary##*.}"
-                if [[ "${file_secondary_name}.${file_secondary_extension}" == "${file_path}.json" ]]; then
-                  config_file="${file_secondary_name}.json"
+              csv_file=""
+              config_file=""
+              if [[ $file_extension == "csv" ]]; then
+                csv_file=${file}
+                for file_secondary in "${added_modified_files[@]}"; do
+                  file_secondary_name="${file_secondary%.*}"
+                  file_secondary_extension="${file_secondary##*.}"
+                  if [[ "${file_secondary_name}.${file_secondary_extension}" == "${file_path}.json" ]]; then
+                    config_file="${file_secondary_name}.json"
+                  fi
+                done
+              elif [[ $file_extension == "json" ]]; then
+                config_file=${file}
+                if [[ -f "${file_path}/${file_name}.csv" ]]; then
+                  csv_file="${file_path}/${file_name}.csv"
                 fi
-              done
-              
-              if [[ -f $config_file ]]; then
-                echo "Config for ${csv_file} is available: ${config_file}"
-                echo "Building CSV-W"
-                csvcubed build $csv_file -c $config_file --out $out_path --validation-errors-to-file
-              else
-                echo "Config for ${csv_file} is not available"
-                echo "Building CSV-W"
-                csvcubed build $csv_file --out $out_path --validation-errors-to-file
               fi
               
-              echo "Inspecting CSV-W"
-              inspect_output_file="${out_path}inspect_output.txt"
-              if [[ -f $inspect_output_file ]]; then
-                  rm $inspect_output_file
+              if [[ -f $csv_file ]]; then
+                if [[ -f $config_file ]]; then
+                  echo "Config for ${csv_file} is available: ${config_file}"
+                  echo "Building CSV-W"
+                  csvcubed build $csv_file -c $config_file --out $out_path --validation-errors-to-file
+                else
+                  echo "Config for ${csv_file} is not available"
+                  echo "Building CSV-W"
+                  csvcubed build $csv_file --out $out_path --validation-errors-to-file
+                fi
+                
+                echo "Inspecting CSV-W"
+                inspect_output_file="${out_path}inspect_output.txt"
+                if [[ -f $inspect_output_file ]]; then
+                    rm $inspect_output_file
+                fi
+
+                mapfile -d $'\0' inspectable_files < <(find "${GITHUB_WORKSPACE}/${out_path}" -name "*.csv-metadata.json" -type f -print0)
+                for file in "${inspectable_files[@]}"; do
+                  echo "Inspecting file ${file}"
+                  csvcubed inspect $file >> "${out_path}inspect_output.txt"
+                done
+                
+
+                unset $config_file
+                echo "Finished processing file ${file}"
+                echo "::set-output name=has_outputs::${{ toJSON(true) }}"
               fi
-
-              mapfile -d $'\0' inspectable_files < <(find "${GITHUB_WORKSPACE}/${out_path}" -name "*.csv-metadata.json" -type f -print0)
-              for file in "${inspectable_files[@]}"; do
-                echo "Inspecting file ${file}"
-                csvcubed inspect $file >> "${out_path}inspect_output.txt"
-              done
-              
-
-              unset $config_file
-              echo "Finished processing file ${file}"
-              echo "::set-output name=has_outputs::${{ toJSON(true) }}"
             fi
           done
 
