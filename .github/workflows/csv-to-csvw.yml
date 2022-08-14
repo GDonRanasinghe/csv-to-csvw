@@ -61,7 +61,7 @@ jobs:
             echo "out_path: ${out_path}"
             echo "root_path: ${root_path}"
 
-            if [[ $file_extension == "csv" && $root_path != "out/" ]]; then
+            if [[ $file_extension == "csv" && $root_path != "out" ]]; then
               echo $'\n'
               echo "Processing file ${file}"
               echo "Output path is ${out_path}"
