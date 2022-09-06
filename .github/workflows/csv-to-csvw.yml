@@ -71,7 +71,6 @@ jobs:
       - name: Publish CSV-Ws and logs to GitHub Pages
         if: ${{ fromJSON(steps.build-and-inspect-inputs.outputs.has_outputs) == true }}
         run: |
-          echo $'\n'
           echo "Publishing to GitHub Pages"
           git checkout -b gh-pages
           rm -r LICENSE
@@ -84,33 +83,7 @@ jobs:
           mapfile -d ',' -t out_files < <(printf '%s,' $(find . -type f -path '*out/*'))
           processed_out_files=$(printf ",%s" "${out_files[@]}")
 
-          touch .nojekyll
-          touch index.html
-
-          cat > index.html <<EOL
-          <!doctype html>
-          <html>
-            <head>
-            </head>
-            <body>
-              <h3>CSV-Ws generated are as below. The latest commit id is ${commit_id}.</h3>
-              <div id="files-container"></div>
-              <script type="text/javascript">
-                var html_str = "<ul>";
-                var files = "${processed_out_files}".split(',');
-                files.shift()
-                files.sort()
-                files.forEach(function(file) {
-                  file = file.replace("./","")
-                  link = "https://${username}.github.io/${repo_name}/"+file
-                  html_str += "<li>"+"<a href='"+ link + "'>"+file+"</a></li>";
-                });
-                html_str += "</ul>";
-                document.getElementById("files-container").innerHTML = html_str;
-              </script>
-            </body>
-          </html>
-          EOL
+          bash .github/workflows/scripts/handle_deleted_files.sh $repo_name $username $commit_id $processed_out_files
 
           git add .nojekyll
           git add index.html
