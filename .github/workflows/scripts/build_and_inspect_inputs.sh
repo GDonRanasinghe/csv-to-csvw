@@ -72,7 +72,8 @@ for file in "${added_modified_files[@]}"; do
       done
       
       echo "Finished processing file ${file}"
-      echo "::set-output name=has_outputs::${{ toJSON(true) }}"
+      has_ouputs=toJSON(true)
+      echo "::set-output name=has_outputs::${{ has_ouputs }}"
     fi
   fi
 done
