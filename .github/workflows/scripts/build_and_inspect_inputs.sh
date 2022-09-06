@@ -1,5 +1,5 @@
 echo "Input argument: $1"
-echo "::set-output name=has_outputs::${{ toJSON(false) }}"
+echo "::set-output name=has_outputs::false"
 
 IFS=', ' read -r -a added_modified_files <<< "$1"
 echo "added_modified_files: ${added_modified_files[@]}"
@@ -70,10 +70,7 @@ for file in "${added_modified_files[@]}"; do
 
         csvcubed inspect $file > $inspect_output_file
       done
-      
-      echo "Finished processing file ${file}"
-      has_ouputs=toJSON(true)
-      echo "::set-output name=has_outputs::${{ has_ouputs }}"
+      echo "::set-output name=has_outputs::true"
     fi
   fi
 done
