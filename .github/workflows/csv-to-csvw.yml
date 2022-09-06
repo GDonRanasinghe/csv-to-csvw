@@ -75,7 +75,6 @@ jobs:
           git checkout -b gh-pages
           rm -r LICENSE
           rm -r README.md
-          rm -r .github/workflows
 
           repo_name=${GITHUB_REPOSITORY#*/}    
           username=${GITHUB_REPOSITORY_OWNER}
