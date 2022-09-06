@@ -35,7 +35,7 @@ jobs:
           git config --global user.name "CSV-W from csv upload generator"
           git pull
 
-      - name: Get all added/changed/removed files inside csv folder
+      - name: Get all added/changed/removed files
         id: get-added-changed-removed-files
         uses: jitterbit/get-changed-files@v1
         with:
@@ -47,7 +47,7 @@ jobs:
           input_files=${{steps.get-added-changed-removed-files.outputs.added_modified}}
           bash .github/workflows/scripts/build_and_inspect_inputs.sh $input_files
 
-      - name: Process all deleted files inside csv folder
+      - name: Process all deleted files
         id: process-deleted-files
         run: |
           deleted_files=${{steps.get-added-changed-removed-files.outputs.removed}}
@@ -83,7 +83,7 @@ jobs:
           mapfile -d ',' -t out_files < <(printf '%s,' $(find . -type f -path '*out/*'))
           processed_out_files=$(printf ",%s" "${out_files[@]}")
 
-          bash .github/workflows/scripts/handle_deleted_files.sh $repo_name $username $commit_id $processed_out_files
+          bash .github/workflows/scripts/generate_git_pages_html.sh $repo_name $username $commit_id $processed_out_files
 
           git add .nojekyll
           git add index.html
