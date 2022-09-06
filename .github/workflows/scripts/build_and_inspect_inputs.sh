@@ -1,3 +1,7 @@
+"""
+Functionality for generating and inspecting CSV-Ws for the input files.
+"""
+
 echo "::set-output name=has_outputs::false"
 
 echo "Input argument: $1"
