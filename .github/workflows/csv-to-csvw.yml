@@ -47,8 +47,8 @@ jobs:
           input_files=${{steps.get-added-changed-removed-files.outputs.added_modified}}
           bash .github/workflows/scripts/build_and_inspect_inputs.sh $input_files
 
-      - name: Process all removed files inside csv folder
-        id: process-removed-files
+      - name: Process all deleted files inside csv folder
+        id: process-deleted-files
         run: |
           deleted_files=${{steps.get-added-changed-removed-files.outputs.removed}}
           bash .github/workflows/scripts/handle_deleted_files.sh $deleted_files
