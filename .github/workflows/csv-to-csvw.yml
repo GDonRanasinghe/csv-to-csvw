@@ -44,6 +44,7 @@ jobs:
       - name: Build and inspect new files
         id: build-and-inspect-inputs
         run: |
+          chmod +x scripts/build_and_inspect_inputs.sh
           sh scripts/build_and_inspect_inputs.sh $steps.get-added-changed-removed-files.outputs.added_modified
 
       - name: Process all removed files inside csv folder
