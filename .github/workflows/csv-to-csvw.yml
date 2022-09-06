@@ -44,7 +44,7 @@ jobs:
       - name: Build and inspect new files
         id: build-and-inspect-inputs
         run: |
-          input_files=${steps.get-added-changed-removed-files.outputs.added_modified}
+          input_files=${{steps.get-added-changed-removed-files.outputs.added_modified}}
           bash .github/workflows/scripts/build_and_inspect_inputs.sh $input_files
 
       - name: Process all removed files inside csv folder
