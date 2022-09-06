@@ -1,6 +1,6 @@
-echo "Input argument: $1"
 echo "::set-output name=has_outputs::false"
 
+echo "Input argument: $1"
 IFS=', ' read -r -a added_modified_files <<< "$1"
 echo "added_modified_files: ${added_modified_files[@]}"
 
